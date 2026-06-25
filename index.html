@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Study Planner Agent</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div id="app-layout">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="app-sidebar">
+      <div class="brand-section">
+        <div class="brand-icon">Ω</div>
+        <div class="brand-name">StudyAgent</div>
+      </div>
+      
+      <nav class="nav-menu">
+        <li>
+          <a href="#" class="nav-link active" data-tab="dashboard-tab">
+            <span class="nav-link-icon">📊</span> Dashboard
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link" data-tab="upload-tab">
+            <span class="nav-link-icon">📂</span> Upload Syllabus
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link" data-tab="planner-tab">
+            <span class="nav-link-icon">📅</span> Study Planner
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link" data-tab="quiz-tab">
+            <span class="nav-link-icon">📝</span> Quiz Module
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link" data-tab="progress-tab">
+            <span class="nav-link-icon">📈</span> Progress Insights
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link" data-tab="settings-tab">
+            <span class="nav-link-icon">⚙️</span> Settings
+          </a>
+        </li>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <p class="text-secondary small text-center m-0">AI Agent Engine v1.0.0</p>
+      </div>
+    </aside>
+
+    <!-- Main Viewport -->
+    <main class="app-main">
+
+      <!-- ================= DASHBOARD TAB ================= -->
+      <section id="dashboard-tab" class="tab-content-view">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <div>
+            <h1 id="dashboard-greeting" class="m-0">Welcome back, Student!</h1>
+            <p class="text-secondary m-0">Here's your learning checklist and status summary.</p>
+          </div>
+        </div>
+
+        <!-- Metric Grid -->
+        <div class="grid-stats">
+          
+          <div class="card stat-card text-center justify-content-center">
+            <div class="circular-progress-box mb-2">
+              <svg class="progress-ring" width="110" height="110">
+                <defs>
+                  <linearGradient id="progress-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#a855f7" />
+                    <stop offset="100%" stop-color="#6366f1" />
+                  </linearGradient>
+                </defs>
+                <circle class="progress-ring-circle-bg" cx="55" cy="55" r="45"></circle>
+                <circle class="progress-ring-circle" cx="55" cy="55" r="45"></circle>
+              </svg>
+              <div id="stat-progress" class="progress-value-center">0%</div>
+            </div>
+            <span class="stat-label">Syllabus Completion</span>
+          </div>
+
+          <div class="card stat-card">
+            <span class="stat-label">Days Left to Exam</span>
+            <span id="stat-days-left" class="stat-value text-danger">N/A</span>
+          </div>
+
+          <div class="card stat-card">
+            <span class="stat-label">Active Streak</span>
+            <span id="stat-streak" class="stat-value text-warning">0 <span class="streak-flame">🔥</span></span>
+          </div>
+
+          <div class="card stat-card">
+            <span class="stat-label">Avg Quiz Score</span>
+            <span id="stat-avg-score" class="stat-value text-info">0%</span>
+          </div>
+
+          <div class="card stat-card">
+            <span class="stat-label">Tasks Pending</span>
+            <div class="d-flex justify-content-between align-items-center mt-2">
+              <div>
+                <span id="stat-completed" class="h3 fw-bold text-success">0</span>
+                <span class="text-secondary small d-block">Completed</span>
+              </div>
+              <div class="border-right-glass" style="height: 30px; border-right: 1px solid var(--border-glass);"></div>
+              <div>
+                <span id="stat-remaining" class="h3 fw-bold text-light">0</span>
+                <span class="text-secondary small d-block">Remaining</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Dashboard Body Layout -->
+        <div class="grid-dashboard-body">
+          <!-- Left Column -->
+          <div class="d-flex flex-column gap-4">
+            <div id="next-session-container">
+              <!-- Next session details render here -->
+            </div>
+            
+            <div class="card">
+              <h3 class="mb-3">Automatic Revision Allocator</h3>
+              <p class="text-secondary small mb-4">
+                The agent continuously monitors your topic recall rates. If you complete a quiz with a score below 70%, the system automatically flags that topic and places it inside the dedicated exam review window.
+              </p>
+              <div id="weak-topics-container">
+                <!-- Weak topics details -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column -->
+          <div>
+            <div class="card h-100">
+              <h3 class="mb-3">Recall Insights</h3>
+              <p class="text-secondary small mb-4">Analytical breakdown of curriculum categories and topic completion percentages.</p>
+              <div id="progress-chart-container">
+                <!-- Progress charts render here -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= UPLOAD SYLLABUS TAB ================= -->
+      <section id="upload-tab" class="tab-content-view d-none">
+        <h1 class="mb-2">Upload Syllabus & Timeline</h1>
+        <p class="text-secondary mb-4">Configure your study parameters and upload your syllabus to generate a personalized calendar plan.</p>
+
+        <div class="row g-3">
+          <!-- Configurations Form -->
+          <div class="col-12 col-md-6">
+            <div class="card h-100">
+              <h3 class="mb-4 text-light">Study Parameters</h3>
+              
+              <form id="planner-config-form">
+                <div class="form-group">
+                  <label class="form-label" for="subject-title">Subject Name</label>
+                  <input class="form-control" type="text" id="subject-title" placeholder="e.g. Computer Science, Calculus, Mechanics" required>
+                </div>
+                
+                <div class="form-group">
+                  <label class="form-label" for="exam-date">Exam Date</label>
+                  <input class="form-control" type="date" id="exam-date" required>
+                </div>
+
+                <div class="row g-2">
+                  <div class="col-6" style="padding: 0 5px 0 0;">
+                    <div class="form-group m-0">
+                      <label class="form-label" for="daily-hours">Available Hours / Day</label>
+                      <input class="form-control" type="number" id="daily-hours" min="1" max="12" value="2" required>
+                    </div>
+                  </div>
+                  <div class="col-6" style="padding: 0 0 0 5px;">
+                    <div class="form-group m-0">
+                      <label class="form-label" for="default-priority">Default Priority</label>
+                      <select class="form-select" id="default-priority">
+                        <option value="high">High</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="low">Low</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group mt-4">
+                  <label class="form-label" for="syllabus-text-fallback">Raw Syllabus Text (Autopopulated by uploads, or paste directly)</label>
+                  <textarea id="syllabus-text-fallback" rows="8" placeholder="Format: Put each topic on a new line. Numbers and bullet points are auto-extracted. e.g.&#10;1. Introduction to Derivatives&#10;2. Chain Rule Rules&#10;3. Derivative Optimization Problems"></textarea>
+                </div>
+
+                <button class="btn btn-gradient w-100 mt-2" type="submit">Compile & Generate Timetable</button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Syllabus Files Dropzone -->
+          <div class="col-12 col-md-6">
+            <div class="d-flex flex-column gap-4 h-100">
+              <div class="card">
+                <h3 class="mb-3">Syllabus Document Upload</h3>
+                <p class="text-secondary small mb-4">
+                  Drag and drop your syllabus file below. The system reads `.txt` files directly, or runs a local OCR text simulator on `.pdf` and `.docx` formats to extract topics.
+                </p>
+                
+                <div class="file-dropzone" id="syllabus-dropzone">
+                  <span class="file-dropzone-icon">📥</span>
+                  <h4>Select or Drag Syllabus Document</h4>
+                  <p class="text-secondary small mt-2">PDF, DOCX, TXT formats supported</p>
+                  <input type="file" id="syllabus-file" class="d-none" accept=".pdf,.docx,.txt">
+                </div>
+                
+                <span id="uploaded-filename" class="badge badge-accent mt-3 d-none text-center">No file selected</span>
+              </div>
+
+              <!-- Guardrails Assessment -->
+              <div class="card flex-grow-1">
+                <h3 class="mb-3">Agent Guardrails Diagnostic</h3>
+                <p class="text-secondary small mb-3">The StudyAgent guardrails block schedules with excessive daily topic density to prevent burnout.</p>
+                <div id="guardrails-dashboard-assessment">
+                  <div class="p-3 text-center border-glass text-secondary rounded">
+                    <p class="m-0 small">Diagnostic metrics will display here upon loading syllabus variables.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= STUDY PLANNER TAB ================= -->
+      <section id="planner-tab" class="tab-content-view d-none">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <div>
+            <h1 class="m-0">Your Study Calendar</h1>
+            <p class="text-secondary m-0">Click checkboxes to complete topics, take recall quizzes, or review adaptive replanning logs.</p>
+          </div>
+          <button id="force-replan-btn" class="btn btn-outline-glass btn-sm">Force Replan Schedule</button>
+        </div>
+
+        <!-- Terminal Console of Agent Reasoning -->
+        <div class="card terminal-card mb-4">
+          <div class="terminal-header">
+            <span class="terminal-dot red"></span>
+            <span class="terminal-dot yellow"></span>
+            <span class="terminal-dot green"></span>
+            <span class="text-secondary small ms-2">study_agent_reasoning_console.sh</span>
+          </div>
+          <div class="terminal-body" id="agent-terminal-logs-list">
+            <!-- Dynamic logs output -->
+          </div>
+        </div>
+
+        <!-- Calendar Component -->
+        <div id="calendar-schedule-container">
+          <!-- Renders the generated calendar dates -->
+        </div>
+      </section>
+
+      <!-- ================= QUIZ TAB ================= -->
+      <section id="quiz-tab" class="tab-content-view d-none">
+        <h1 class="mb-2">Recall Assessment Module</h1>
+        <p class="text-secondary mb-4">Take rapid quizzes to evaluate your topic understanding. Scoring above 60% automatically signs off the topic.</p>
+
+        <div class="row g-3 justify-content-center">
+          <div class="col-12 col-md-8">
+            <div class="card" id="quiz-card-container">
+              <div class="text-center py-5">
+                <span class="fs-1">📝</span>
+                <h3 class="mt-3">No Active Quiz</h3>
+                <p class="text-secondary">Navigate to the study calendar and click "Quiz" on any topic to start.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= PROGRESS TAB ================= -->
+      <section id="progress-tab" class="tab-content-view d-none">
+        <h1 class="mb-2">Learning Progress & History</h1>
+        <p class="text-secondary mb-4">Detailed records of historical study metrics and test attempts.</p>
+
+        <div class="row g-3">
+          <!-- Calendar streak tracking -->
+          <div class="col-12 col-md-6">
+            <div class="card h-100">
+              <h3 class="mb-3">Activity Ledger</h3>
+              <p class="text-secondary small mb-4">Keep your daily streak alive by completing at least one study checklist item or taking a quiz.</p>
+              
+              <div class="d-flex align-items-center justify-content-around p-4 border-glass rounded mb-4">
+                <div class="text-center">
+                  <span style="font-size: 3rem; display: block;" class="streak-flame active">🔥</span>
+                  <span class="h4 fw-bold mt-2 d-block">Streak Value</span>
+                </div>
+                <div class="text-center">
+                  <span id="progress-streak-value" class="h1 fw-bold text-warning" style="font-size: 3.5rem;">0</span>
+                  <span class="text-secondary small d-block">consecutive days</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- History Table of Quizzes -->
+          <div class="col-12 col-md-6">
+            <div class="card h-100">
+              <h3 class="mb-3">Quiz Attempt History</h3>
+              <p class="text-secondary small mb-3">Scores from preceding assessment sessions.</p>
+              
+              <div style="max-height: 350px; overflow-y: auto; scrollbar-width: thin;">
+                <table class="w-100 text-start" style="border-collapse: collapse; font-size: 0.9rem;">
+                  <thead>
+                    <tr class="border-bottom-glass" style="color: var(--text-secondary);">
+                      <th class="py-2">Topic</th>
+                      <th class="py-2">Score</th>
+                      <th class="py-2">Date</th>
+                    </tr>
+                  </thead>
+                  <tbody id="quiz-history-table-body">
+                    <tr class="border-bottom-glass">
+                      <td colspan="3" class="py-4 text-center text-secondary">No quiz logs available.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= SETTINGS TAB ================= -->
+      <section id="settings-tab" class="tab-content-view d-none">
+        <h1 class="mb-2">System Settings</h1>
+        <p class="text-secondary mb-4">Manage student profile information, study intervals, and data stores.</p>
+
+        <div class="row g-3">
+          <!-- Profile Settings -->
+          <div class="col-12 col-md-6">
+            <div class="card h-100">
+              <h3 class="mb-4">Student Profile</h3>
+              
+              <form id="settings-form">
+                <div class="form-group">
+                  <label class="form-label" for="student-name-input">Student Name</label>
+                  <input class="form-control" type="text" id="student-name-input" placeholder="Enter name">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="exam-date-settings">Exam Date</label>
+                  <input class="form-control" type="date" id="exam-date-settings">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="daily-hours-settings">Target Study Hours / Day</label>
+                  <input class="form-control" type="number" id="daily-hours-settings" min="1" max="12">
+                </div>
+
+                <button class="btn btn-gradient mt-2 w-100" type="submit">Update Profile Configurations</button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Storage Controls -->
+          <div class="col-12 col-md-6">
+            <div class="card h-100 d-flex flex-column justify-content-between">
+              <div>
+                <h3 class="mb-3 text-light">Clear State Databases</h3>
+                <p class="text-secondary small mb-4">
+                  Permanently erase all syllabus structures, calendar tracks, active streaks, and quiz reports saved inside your browser's Local Storage.
+                </p>
+                <div class="alert alert-warning-glass mb-4">
+                  <strong>Warning:</strong> This wipes local cache data. Backups cannot be recovered.
+                </div>
+              </div>
+              <button id="reset-data-btn" class="btn btn-outline-glass text-danger w-100 mt-2">Reset Application Memory</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Agent Thinking Loading Modal Overlay -->
+  <div id="agent-thinking-overlay" class="agent-thinking-modal d-none">
+    <div class="card terminal-card agent-thinking-box">
+      <div class="terminal-header">
+        <span class="terminal-dot red"></span>
+        <span class="terminal-dot yellow"></span>
+        <span class="terminal-dot green"></span>
+        <span class="text-secondary small ms-2">agent_scheduler_optimizer.sh (Running...)</span>
+      </div>
+      <div class="terminal-body" id="agent-terminal-body">
+        <!-- Live stream reasoning lines -->
+      </div>
+      <div class="p-3 border-top-glass-light text-center">
+        <div style="display: inline-block; width: 12px; height: 12px; border: 2px solid var(--color-accent); border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite;" class="me-2"></div>
+        <span class="text-secondary small">StudyAgent is organizing your syllabus structure...</span>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+
+  <!-- Modular Scripts Import -->
+  <script src="data/questions.js"></script>
+  <script src="js/memory.js"></script>
+  <script src="js/parser.js"></script>
+  <script src="js/guardrails.js"></script>
+  <script src="js/planner.js"></script>
+  <script src="js/quiz.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
