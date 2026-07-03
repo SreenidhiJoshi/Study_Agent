@@ -1,3 +1,4 @@
+
 # AI Study Planner Agent 🎓🚀
 
 AI Study Planner Agent (**StudyAgent**) is an interactive, browser-based SPA study assistant powered by a client-side agentic engine. It is designed to tackle the common pitfalls of exam preparation: academic burnout, decision fatigue, static schedules, and poor recall retention. 
